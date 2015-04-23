@@ -1,0 +1,87 @@
+For any questions about the source code and datasets, please contact Jingchao Ni (jingchao.ni@case.edu), thanks.
+
+1. ExampleDatasets:
+
+(1) DBLP_NoN.mat: the example NoN constructed using 121 conferences from the DBLP dataset.
+
+In this file:
+
+a. ConfNet: the conference similarity network. The similarity is estimated by the normalized number of citations.
+b. ConfDict: the dictionary of the names of conferences
+c. CoAuthorNets: the conference-specific co-author networks corresponding to the conferences in the conference similarity network.
+d. CoAuthorNetsID: the corresponding IDs of authors in CoAuthorNets. The author names can be retrieved from AuthorDict by using these IDs.
+e. AuthorDict: the dictionary of the names of all authors.
+
+Note:
+
+The original DBLP datasets are publicly available from http://arnetminer.org/billboard/citation.
+
+(2) P_G_NoN.mat: the example NoN constructed using 'Node Removal' tissue-specific PPI networks with MAS threshold 0.4, disease similarity 0.4, the disease similarity network is then processed by KNN-graph with k = 5.
+
+In this file:
+
+a. PhenotypeSimNet: the disease similarity network.
+d. PhenotypeID: the MIM IDs of diseases in the disease similarity network.
+c. TSGeneNets: the tissue-specific PPI networks corresponding to the diseases in the disease similarity network.
+d. TSGeneNetsID: the corresponding Entrez IDs of genes in TSGeneNets.
+e. AllGeneID: the Entrez IDs of all genes in all tissue-specific PPI networks.
+f. Seeds: the known causal genes of diseases in each tissue-specific PPI network, corresponding to TSGeneNets.
+g. TissueDict: the dictionary of the names of the most associated tissues of the diseases in the disease similarity network.
+
+Note:
+
+The original tissue-specific PPI networks are publicly available from "O. Magger, Y. Y. Waldman, E. Ruppin, and R. Sharan. Enhancing the prioritization of disease-causing genes through tissue specific protein interaction networks. PLoS Computational Biology, 8(9):e1002690, 2012.(http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002690). Thus an NoN with 'Edge Reweight' tissue-specific PPI networks can be similarly constructed.
+
+2. CR:
+
+(1) CR_CrossValidation.m: leave-one-out cross validation of CrossRank on tissue-specific PPI networks.
+
+(2) CR_Precomputation.m: the precomputation step of CrossRank.
+
+(3) CR: CrossRank power method.
+
+(4) J_CR.m: the objective function value of CrossRank.
+
+(5) AUCEvaluation.m and AUCValue.m: AUC value evaluation with up to 50, 100, 300, 500, 700 and 1000 false positives.
+
+Run CR_CrossValidation.m to see the evaluation results of the leave-one-out cross validation on tissue-specific PPI networks of the CrossRank algorithm.
+
+Note:
+
+(1) CrossRank has precomputation steps, which may take some time. The precomputation steps only need to be computed once for a dataset. If a precomputation file exists for a dataset, CrossRank will detect it and run directly.
+
+(2) All codes are tested using MATLAB R2013a.
+
+3. CQ:
+
+(1) RunCQ_Basic.m: run this file to see the performance of CrossQuery-Basic. CrossQuery-Basic returns the exact top k results as CrossRank without relative ranks. When there are ties of ranking scores at k th position, both CrossQuery-Basic and CrossRank return random ties thus the retrieved top k results can be slightly different.
+
+(2) RunCQ_Fast.m: run this file to see the performance of CrossQuery-Fast. CrossQuery-Fast returns approximate top k results to CrossRank without relative ranks. The approximation accuracy can be controlled using the parameter epsilon. When there are ties of ranking scores at k th position, CrossQuery-Fast returns random ties.
+
+(3) RunCR_DBLP.m: run this file to see the performance of CrossRank on the DBLP dataset. CrossRank is used for comparison here.
+
+(4) Precomputation.m: the precomputation step of CrossRank/CrossQuery-Basic/CrossQuery-Fast.
+
+(5) CQ_Basic.m: CrossQuery-Basic. Since MATLAB sparse matrix multiplication time complexity is proportional to the number of non-zero entries, it is more efficient in practice to directly multiply W and p than applying BFS search before this multiplication in each iteration. One also can apply BFS one layer search in each iteration by using the function BFS_layer.
+
+(6) CQ_Fast.m: CrossQuery-Fast.
+
+(7) CR: CrossRank power method.
+
+(8) ExtractSubNet.m: extract a relevant subnetwork from the main network w.r.t. source and target domains.
+
+(9) DijkstraExpansion.m: one step expansion of Dijkstra's algorithm.
+
+(10) BFS_Layer.m: one layer BFS search.
+
+(11) sparse_to_csr.m: convert a sparse matrix into compressed row storage vectors.
+
+(12) kthvalue.m: select the k-th smallest element in a (random) vector.
+
+Run RunCQ_Basic.m, RunCQ_Fast.m and RunCR_DBLP.m to see the performance of CrossQuery-Basic, CrossQuery-Fast and CrossRank on the DBLP dataset, respectively.
+
+Note:
+
+(1) CrossRank, CrossQuery-Basic and CrossQuery-Fast have precomputation steps, which may take some time. The precomputation steps only need to be computed once for a dataset. If a precomputation file exists for a dataset, CrossRank, CrossQuery-Basic and CrossQuery-Fast will detect it and run directly.
+
+(2) All codes are tested using MATLAB R2013a.
